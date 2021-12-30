@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name ProspectBoards-rescue)(type Legacy)(uri ${KIPRJMOD}/ProspectBoards-rescue.lib)(options "")(descr ""))
+)
