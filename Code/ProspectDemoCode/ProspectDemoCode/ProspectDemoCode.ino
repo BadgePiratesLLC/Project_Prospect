@@ -23,12 +23,21 @@ AsyncWebServer server(80);
 const char* ssid = "badgedemo"; // Your WiFi AP SSID 
 const char* password = ""; // Your WiFi Password
 
-  int LED1 = 10;
-  int LED2 = 11;
-  int LED3 = 12;
-  int LED4 = 13;
-  int LED_DELAY = 100;
+const int LED1 = 10;
+const int LED2 = 11;
+const int LED3 = 12;
+const int LED4 = 13;
+const int BTNLEFT = 4;
+const int BTNRIGHT = 5;
+const int BTNUP = 6;
+const int BTNDOWN = 7;
+const int BTNMIDDLE = 8;
 
+const int LED_DELAY = 100;
+
+const int BTNTHRESHOLD = 40000;
+
+int BOOT = 0;
 
 /* Message callback of WebSerial */
 void recvMsg(uint8_t *data, size_t len){
@@ -61,7 +70,16 @@ void setup() {
 }
 
 void loop() {
-   digitalWrite(LED1, HIGH);   // turn the LED on (HIGH is the voltage level)
+
+int BTNLEFTVAL = touchRead(BTNLEFT);
+int BTNRIGHTVAL = touchRead(BTNRIGHT);
+int BTNUPVAL = touchRead(BTNUP);
+int BTNDOWNVAL = touchRead(BTNDOWN);
+int BTNMIDDLEVAL = touchRead(BTNMIDDLE);
+
+
+  if(BOOT = 1) {
+  digitalWrite(LED1, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(LED_DELAY); 
   digitalWrite(LED1, LOW);    // turn the LED off by making the voltage LOW
   delay(LED_DELAY);
@@ -76,4 +94,12 @@ void loop() {
   digitalWrite(LED4, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(LED_DELAY);
   digitalWrite(LED4, LOW);   // turn the LED on (HIGH is the voltage level)
+  }
+
+
+  if(BTNLEFTVAL > BTNTHRESHOLD) {
+    BOOT = 0;
+  }
+  
+  Serial.println(touchRead(BTNLEFT));
 }
