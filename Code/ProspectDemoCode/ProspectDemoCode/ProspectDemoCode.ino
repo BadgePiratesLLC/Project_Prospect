@@ -37,7 +37,7 @@ const int LED_DELAY = 100;
 
 const int BTNTHRESHOLD = 40000;
 
-int BOOT = 0;
+int BOOTVAR = 0;
 
 /* Message callback of WebSerial */
 void recvMsg(uint8_t *data, size_t len){
@@ -78,7 +78,7 @@ int BTNDOWNVAL = touchRead(BTNDOWN);
 int BTNMIDDLEVAL = touchRead(BTNMIDDLE);
 
 
-  if(BOOT = 1) {
+if (BOOTVAR = 1) {
   digitalWrite(LED1, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(LED_DELAY); 
   digitalWrite(LED1, LOW);    // turn the LED off by making the voltage LOW
@@ -94,12 +94,13 @@ int BTNMIDDLEVAL = touchRead(BTNMIDDLE);
   digitalWrite(LED4, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(LED_DELAY);
   digitalWrite(LED4, LOW);   // turn the LED on (HIGH is the voltage level)
-  }
+ }
 
 
-  if(BTNLEFTVAL > BTNTHRESHOLD) {
-    BOOT = 0;
+  if (BTNLEFTVAL < BTNTHRESHOLD) {
+    Serial.print("BTNLEFT Touched");
   }
-  
+
+  //WebSerial.println(touchRead(BTNLEFT));
   Serial.println(touchRead(BTNLEFT));
 }
