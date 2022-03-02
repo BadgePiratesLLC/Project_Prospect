@@ -79,6 +79,11 @@ void setup() {
     server.begin();
 
 
+pinMode(LED1, OUTPUT);
+pinMode(LED2, OUTPUT);
+pinMode(LED3, OUTPUT);
+pinMode(LED4, OUTPUT);
+
 if (DEBUGMODE == 1)
 {
   int BTNLEFTVAL = touchRead(BTNLEFT);
@@ -107,10 +112,20 @@ void BTNCHECK(uint8_t BTNNAME) {
 }
 
 
+void BLINKLED(uint8_t LEDNAME) {
+  digitalWrite(LEDNAME, !digitalRead(LEDNAME));
+  delay (1000);
+}
+
 
 void loop() {
 
+digitalWrite(LED1, (millis() / 1000) % 2);
+digitalWrite(LED2, (millis() / 1000) % 3);
+digitalWrite(LED3, (millis() / 1000) % 5);
+digitalWrite(LED4, (millis() / 1000) % 7);
 
+/*
    if (BTNLEFT_TIME.update()) 
    {
     int BTNLEFTVAL = touchRead(BTNLEFT);
@@ -136,5 +151,4 @@ void loop() {
    int BTNMIDDLEVAL = touchRead(BTNMIDDLE);
    if (BTNMIDDLEVAL < BTNTHRESHOLD) { Serial.print("Middle Press: "); Serial.println(BTNMIDDLEVAL); WebSerial.println("Middle Button Pressed"); }
    } */
-
 }
