@@ -2,6 +2,9 @@
   Based on the WebSerial Demo AP
   Author: Ayush Sharma
   Checkout WebSerial Pro: https://webserial.pro
+
+  BadgePirates Prospect Demo Badge 2022
+  Demo Code Author: Carl Fugate
 */
 
 
@@ -40,6 +43,7 @@ const int BTNTHRESHOLD = 30000;
 const int BTNTIMEVAR = 1000;
 
 const int DEBUGMODE = 1;
+const int DEBUGTIMEVAR = 1000;
 
 
 noDelay BTNLEFT_TIME(BTNTIMEVAR);
@@ -47,11 +51,7 @@ noDelay BTNRIGHT_TIME(BTNTIMEVAR);
 noDelay BTNUP_TIME(BTNTIMEVAR);
 noDelay BTNDOWN_TIME(BTNTIMEVAR);
 noDelay BTNMIDDLE_TIME(BTNTIMEVAR);
-
-noDelay LED1_TIME(500);
-noDelay LED2_TIME(600);
-noDelay LED3_TIME(700);
-noDelay LED4_TIME(800);
+noDelay DEBUG_TIME(DEBUGTIMEVAR);
 
 /* Message callback of WebSerial */
 void recvMsg(uint8_t *data, size_t len){
@@ -84,8 +84,15 @@ pinMode(LED2, OUTPUT);
 pinMode(LED3, OUTPUT);
 pinMode(LED4, OUTPUT);
 
-if (DEBUGMODE == 1)
-{
+if (DEBUGMODE == 1) {
+
+CAPDEBUG();
+}
+
+}
+
+void CAPDEBUG() {
+  if (DEBUG_TIME.update()) {
   int BTNLEFTVAL = touchRead(BTNLEFT);
   int BTNRIGHTVAL = touchRead(BTNRIGHT);
   int BTNUPVAL = touchRead(BTNUP);
@@ -98,8 +105,8 @@ if (DEBUGMODE == 1)
   Serial.print("UPBTNVAL: "); Serial.println(BTNUPVAL);
   Serial.print("DOWNBTNVAL: "); Serial.println(BTNDOWNVAL);
   Serial.print("MIDDLEBTNVAL: "); Serial.println(BTNMIDDLEVAL);
-}
-
+  
+  }
 }
 
 void BTNCHECK(uint8_t BTNNAME) {
@@ -125,30 +132,35 @@ digitalWrite(LED2, (millis() / 1000) % 3);
 digitalWrite(LED3, (millis() / 1000) % 5);
 digitalWrite(LED4, (millis() / 1000) % 7);
 
-/*
-   if (BTNLEFT_TIME.update()) 
-   {
-    int BTNLEFTVAL = touchRead(BTNLEFT);
+
+
+//CAPDEBUG();
+
+
+   if (BTNLEFT_TIME.update()) {
+   int BTNLEFTVAL = touchRead(BTNLEFT);
     if (BTNLEFTVAL < BTNTHRESHOLD) { Serial.print("Left Press: "); Serial.println(BTNLEFTVAL); WebSerial.println("Left Button Pressed"); }
    }
-   if (BTNRIGHT_TIME.update()) 
-   {
+   
+   if (BTNRIGHT_TIME.update()) {
    int BTNRIGHTVAL = touchRead(BTNRIGHT);
-   if (BTNRIGHTVAL < BTNTHRESHOLD) { Serial.print("Right Press: "); Serial.println(BTNRIGHTVAL); WebSerial.println("Right Button Pressed"); }
+    if (BTNRIGHTVAL < BTNTHRESHOLD) { Serial.print("Right Press: "); Serial.println(BTNRIGHTVAL); WebSerial.println("Right Button Pressed"); }
    }
-    if (BTNUP_TIME.update()) 
-   {
+   
+   if (BTNUP_TIME.update()) {
    int BTNUPVAL = touchRead(BTNUP);
-   if (BTNUPVAL < BTNTHRESHOLD) { Serial.print("Up Press: "); Serial.println(BTNUPVAL); WebSerial.println("Up Button Pressed"); }
+    if (BTNUPVAL < BTNTHRESHOLD) { Serial.print("Up Press: "); Serial.println(BTNUPVAL); WebSerial.println("Up Button Pressed"); }
    }
-    if (BTNDOWN_TIME.update()) 
-   {
+   
+   if (BTNDOWN_TIME.update()) {
    int BTNDOWNVAL = touchRead(BTNDOWN);
-   if (BTNDOWNVAL < BTNTHRESHOLD) { Serial.print("Down Press: "); Serial.println(BTNDOWNVAL); WebSerial.println("Down Button Pressed"); }
+    if (BTNDOWNVAL < BTNTHRESHOLD) { Serial.print("Down Press: "); Serial.println(BTNDOWNVAL); WebSerial.println("Down Button Pressed"); }
    }
-   /* if (BTNMIDDLE_TIME.update()) 
-   {
+   
+   /* if (BTNMIDDLE_TIME.update()) {
    int BTNMIDDLEVAL = touchRead(BTNMIDDLE);
-   if (BTNMIDDLEVAL < BTNTHRESHOLD) { Serial.print("Middle Press: "); Serial.println(BTNMIDDLEVAL); WebSerial.println("Middle Button Pressed"); }
+    if (BTNMIDDLEVAL < BTNTHRESHOLD) { Serial.print("Middle Press: "); Serial.println(BTNMIDDLEVAL); WebSerial.println("Middle Button Pressed"); }
    } */
+
+   delay(500);
 }
