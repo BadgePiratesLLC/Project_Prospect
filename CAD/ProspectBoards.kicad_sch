@@ -2905,7 +2905,7 @@
     (uuid 00000000-0000-0000-0000-0000615b1b47)
     (property "Reference" "SW_Reset1" (id 0) (at 31.75 119.761 0))
     (property "Value" "Reset_Btn" (id 1) (at 31.75 122.0724 0))
-    (property "Footprint" "BadgePirate:Switch_Tactile_SMD_B3U-1000P-BPVersion" (id 2) (at 31.75 121.92 0)
+    (property "Footprint" "BadgePirates:Switch_Tactile_SMD_B3U-1000P-BPVersion" (id 2) (at 31.75 121.92 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 31.75 121.92 0)
@@ -3251,7 +3251,7 @@
     (uuid 00000000-0000-0000-0000-000061ceeaab)
     (property "Reference" "SW1" (id 0) (at 88.9 16.891 0))
     (property "Value" "SW_SPST" (id 1) (at 88.9 19.2024 0))
-    (property "Footprint" "BadgePirate:Switch_Tactile_SMD_B3U-1000P-BPVersion" (id 2) (at 88.9 22.86 0)
+    (property "Footprint" "BadgePirates:Switch_Tactile_SMD_B3U-1000P-BPVersion" (id 2) (at 88.9 22.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 88.9 22.86 0)
@@ -3514,13 +3514,13 @@
       (reference "R5") (unit 1) (value "10k") (footprint "BadgePirate:R_1206_3216Metric")
     )
     (path "/00000000-0000-0000-0000-000061ceeaab"
-      (reference "SW1") (unit 1) (value "SW_SPST") (footprint "BadgePirate:Switch_Tactile_SMD_B3U-1000P-BPVersion")
+      (reference "SW1") (unit 1) (value "SW_SPST") (footprint "BadgePirates:Switch_Tactile_SMD_B3U-1000P-BPVersion")
     )
     (path "/00000000-0000-0000-0000-0000614a1475"
       (reference "SW6") (unit 1) (value "SW_SPDT") (footprint "BadgePirate:SW_SPDT_PCM12")
     )
     (path "/00000000-0000-0000-0000-0000615b1b47"
-      (reference "SW_Reset1") (unit 1) (value "Reset_Btn") (footprint "BadgePirate:Switch_Tactile_SMD_B3U-1000P-BPVersion")
+      (reference "SW_Reset1") (unit 1) (value "Reset_Btn") (footprint "BadgePirates:Switch_Tactile_SMD_B3U-1000P-BPVersion")
     )
     (path "/00000000-0000-0000-0000-0000616a16bf"
       (reference "TP1") (unit 1) (value "CT_Center") (footprint "BadgePirate:TouchPad_10x10mm")
