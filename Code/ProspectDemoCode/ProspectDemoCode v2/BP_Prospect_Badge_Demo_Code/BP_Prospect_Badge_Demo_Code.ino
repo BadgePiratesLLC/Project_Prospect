@@ -45,8 +45,10 @@ const int LED_DELAY = 100;
 const int BTNTHRESHOLD = 30000;
 const int BTNTIMEVAR = 1000;
 
-
+String WEBSERIAL_DATA = "";
 int BTNPRESSED = 0;
+int FIRSTBOOT = 1;
+int WEBSERIAL_MENU_DISPLAY = 0;
 
 
 noDelay BTNLEFT_TIME(BTNTIMEVAR);
@@ -58,12 +60,14 @@ noDelay DEBUG_TIME(DEBUGTIMEVAR);
 
 /* Message callback of WebSerial */
 void recvMsg(uint8_t *data, size_t len){
-  WebSerial.println("Received Data...");
-  String d = "";
+  //WebSerial.println("Received Data...");
   for(int i=0; i < len; i++){
-    d += char(data[i]);
+    WEBSERIAL_DATA += char(data[i]);
   }
-  WebSerial.println(d);
+  Serial.println(WEBSERIAL_DATA);
+  //WebSerial.println(WEBSERIAL_DATA);
+
+
 }
 
 
@@ -72,14 +76,16 @@ void setup() {
     WiFi.softAP(ssid, password);
 
     IPAddress IP = WiFi.softAPIP();
-    Serial.print("AP IP address: ");
-    Serial.println(IP);
+    //Serial.print("AP IP address: ");
+    //Serial.println(IP);
     // WebSerial is accessible at "<IP Address>/webserial" in browser
+    // Modified webserial.h library to go directly to root at <IP Address>/"
     WebSerial.begin(&server);
     /* Attach Message Callback */
     WebSerial.msgCallback(recvMsg);
     AsyncElegantOTA.begin(&server);
     server.begin();
+    WebSerial.println("Type 0 to begin");
 
 
 pinMode(LED1, OUTPUT);
@@ -121,9 +127,29 @@ void BTNCHECK(uint8_t BTNNAME) {
         }
 }
 
+
+
+void WEBSERIAL_MENU() {
+  WebSerial.println("Enter your selection: ");
+  WebSerial.println("");
+  WebSerial.println("");
+  WebSerial.println("");
+  WebSerial.println(""); 
+  WebSerial.println("--------------------");
+  WebSerial.println("1. Who are the Badge Pirates?");
+  WebSerial.println("2. Badge Overview");
+  WebSerial.println("3. Next steps");
+  WebSerial.println("--------------------");
+}
+
 void loop() {
 
-CAPDEBUG();
+if (FIRSTBOOT == 1) {
+  WEBSERIAL_MENU();
+  FIRSTBOOT = 0;
+  BTNPRESSED = 0;
+}
+
 
 
 
@@ -152,18 +178,51 @@ CAPDEBUG();
     if (BTNMIDDLEVAL < BTNTHRESHOLD) { Serial.print("Middle Press: "); Serial.println(BTNMIDDLEVAL); WebSerial.println("Middle Button Pressed"); }
    } */
 
-   
+
+if (WEBSERIAL_MENU_DISPLAY == 1) {
+  WEBSERIAL_MENU();
+}
+
+if (WEBSERIAL_DATA == "") {
+  WEBSERIAL_MENU_DISPLAY = 0;
+}
+
+
+
+switch (WEBSERIAL_DATA.toInt()) {
+  case 1:
+    WebSerial.println("We are the Badge Pirates");
+    WEBSERIAL_DATA = "";
+    WEBSERIAL_MENU_DISPLAY = 1;
+    break;
+  case 2:
+  WebSerial.println("The badge does things!");
+  WEBSERIAL_DATA = "";
+  WEBSERIAL_MENU_DISPLAY = 1;
+    break;
+  case 3:
+   WebSerial.println("For more information please contact us at sales@badgepirates.com");
+   WEBSERIAL_DATA = "";
+   WEBSERIAL_MENU_DISPLAY = 1;
+    break;
+  default:
+    break;
+}
+
+
+
+
+
 // Semi Random LED blinking pattern
 
 if (BTNPRESSED == 1) {
-  Serial.println("Got here");
   digitalWrite(LED1, (millis() / 1000) % 2);
   digitalWrite(LED2, (millis() / 1000) % 3);
   digitalWrite(LED3, (millis() / 1000) % 5);
   digitalWrite(LED4, (millis() / 1000) % 7);
   }
 
-//Rest Button pressed value
+//Rest Button pressed value check
 BTNPRESSED = 0;
 
 }
