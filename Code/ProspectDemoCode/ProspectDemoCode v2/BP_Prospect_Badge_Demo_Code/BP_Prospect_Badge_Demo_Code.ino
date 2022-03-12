@@ -22,6 +22,7 @@
 #include <WebSerial.h>
 #include <AsyncElegantOTA.h>
 #include<NoDelay.h>
+#include <DNSServer.h>
 
 
 AsyncWebServer server(80);
@@ -29,7 +30,7 @@ AsyncWebServer server(80);
 const int DEBUGMODE = 1;
 const int DEBUGTIMEVAR = 1000;
 
-const char* ssid = "badgedemo"; // Your WiFi AP SSID 
+const char* ssid = "2022_Badge"; // Your WiFi AP SSID 
 const char* password = ""; // Your WiFi Password
 
 const int LED1 = 10;
@@ -45,6 +46,7 @@ const int LED_DELAY = 100;
 const int BTNTHRESHOLD = 30000;
 const int BTNTIMEVAR = 1000;
 
+
 String WEBSERIAL_DATA = "";
 int BTNPRESSED = 0;
 int FIRSTBOOT = 1;
@@ -57,6 +59,8 @@ noDelay BTNUP_TIME(BTNTIMEVAR);
 noDelay BTNDOWN_TIME(BTNTIMEVAR);
 noDelay BTNMIDDLE_TIME(BTNTIMEVAR);
 noDelay DEBUG_TIME(DEBUGTIMEVAR);
+
+DNSServer dnsServer;
 
 /* Message callback of WebSerial */
 void recvMsg(uint8_t *data, size_t len){
@@ -87,11 +91,13 @@ void setup() {
     server.begin();
     WebSerial.println("Type 0 to begin");
 
+    dnsServer.start(53, "*", WiFi.softAPIP());
 
-pinMode(LED1, OUTPUT);
-pinMode(LED2, OUTPUT);
-pinMode(LED3, OUTPUT);
-pinMode(LED4, OUTPUT);
+    // SETUP LED pins
+    pinMode(LED1, OUTPUT);
+    pinMode(LED2, OUTPUT);
+    pinMode(LED3, OUTPUT);
+    pinMode(LED4, OUTPUT);
 
 if (DEBUGMODE == 1) {
 
@@ -133,8 +139,6 @@ void WEBSERIAL_MENU() {
   WebSerial.println("Enter your selection: ");
   WebSerial.println("");
   WebSerial.println("");
-  WebSerial.println("");
-  WebSerial.println(""); 
   WebSerial.println("--------------------");
   WebSerial.println("1. Who are the Badge Pirates?");
   WebSerial.println("2. Badge Overview");
@@ -143,6 +147,8 @@ void WEBSERIAL_MENU() {
 }
 
 void loop() {
+
+dnsServer.processNextRequest();
 
 if (FIRSTBOOT == 1) {
   WEBSERIAL_MENU();
@@ -188,6 +194,7 @@ if (WEBSERIAL_DATA == "") {
 }
 
 
+/*
 
 switch (WEBSERIAL_DATA.toInt()) {
   case 1:
@@ -210,7 +217,7 @@ switch (WEBSERIAL_DATA.toInt()) {
 }
 
 
-
+*/
 
 
 // Semi Random LED blinking pattern
