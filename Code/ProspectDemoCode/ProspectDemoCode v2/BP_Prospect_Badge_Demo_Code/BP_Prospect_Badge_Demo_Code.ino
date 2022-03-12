@@ -26,6 +26,9 @@
 
 AsyncWebServer server(80);
 
+const int DEBUGMODE = 1;
+const int DEBUGTIMEVAR = 1000;
+
 const char* ssid = "badgedemo"; // Your WiFi AP SSID 
 const char* password = ""; // Your WiFi Password
 
@@ -42,8 +45,8 @@ const int LED_DELAY = 100;
 const int BTNTHRESHOLD = 30000;
 const int BTNTIMEVAR = 1000;
 
-const int DEBUGMODE = 1;
-const int DEBUGTIMEVAR = 1000;
+
+int BTNPRESSED = 0;
 
 
 noDelay BTNLEFT_TIME(BTNTIMEVAR);
@@ -118,43 +121,30 @@ void BTNCHECK(uint8_t BTNNAME) {
         }
 }
 
-
-void BLINKLED(uint8_t LEDNAME) {
-  digitalWrite(LEDNAME, !digitalRead(LEDNAME));
-  delay (1000);
-}
-
-
 void loop() {
 
-digitalWrite(LED1, (millis() / 1000) % 2);
-digitalWrite(LED2, (millis() / 1000) % 3);
-digitalWrite(LED3, (millis() / 1000) % 5);
-digitalWrite(LED4, (millis() / 1000) % 7);
+CAPDEBUG();
 
-
-
-//CAPDEBUG();
 
 
    if (BTNLEFT_TIME.update()) {
    int BTNLEFTVAL = touchRead(BTNLEFT);
-    if (BTNLEFTVAL < BTNTHRESHOLD) { Serial.print("Left Press: "); Serial.println(BTNLEFTVAL); WebSerial.println("Left Button Pressed"); }
+    if (BTNLEFTVAL < BTNTHRESHOLD) { Serial.print("Left Press: "); Serial.println(BTNLEFTVAL); BTNPRESSED = 1; }
    }
    
    if (BTNRIGHT_TIME.update()) {
    int BTNRIGHTVAL = touchRead(BTNRIGHT);
-    if (BTNRIGHTVAL < BTNTHRESHOLD) { Serial.print("Right Press: "); Serial.println(BTNRIGHTVAL); WebSerial.println("Right Button Pressed"); }
+    if (BTNRIGHTVAL < BTNTHRESHOLD) { Serial.print("Right Press: "); Serial.println(BTNRIGHTVAL); BTNPRESSED = 1; }
    }
    
    if (BTNUP_TIME.update()) {
    int BTNUPVAL = touchRead(BTNUP);
-    if (BTNUPVAL < BTNTHRESHOLD) { Serial.print("Up Press: "); Serial.println(BTNUPVAL); WebSerial.println("Up Button Pressed"); }
+    if (BTNUPVAL < BTNTHRESHOLD) { Serial.print("Up Press: "); Serial.println(BTNUPVAL); BTNPRESSED = 1; }
    }
    
    if (BTNDOWN_TIME.update()) {
    int BTNDOWNVAL = touchRead(BTNDOWN);
-    if (BTNDOWNVAL < BTNTHRESHOLD) { Serial.print("Down Press: "); Serial.println(BTNDOWNVAL); WebSerial.println("Down Button Pressed"); }
+    if (BTNDOWNVAL < BTNTHRESHOLD) { Serial.print("Down Press: "); Serial.println(BTNDOWNVAL); BTNPRESSED = 1; }
    }
    
    /* if (BTNMIDDLE_TIME.update()) {
@@ -162,5 +152,18 @@ digitalWrite(LED4, (millis() / 1000) % 7);
     if (BTNMIDDLEVAL < BTNTHRESHOLD) { Serial.print("Middle Press: "); Serial.println(BTNMIDDLEVAL); WebSerial.println("Middle Button Pressed"); }
    } */
 
-   delay(500);
+   
+// Semi Random LED blinking pattern
+
+if (BTNPRESSED == 1) {
+  Serial.println("Got here");
+  digitalWrite(LED1, (millis() / 1000) % 2);
+  digitalWrite(LED2, (millis() / 1000) % 3);
+  digitalWrite(LED3, (millis() / 1000) % 5);
+  digitalWrite(LED4, (millis() / 1000) % 7);
+  }
+
+//Rest Button pressed value
+BTNPRESSED = 0;
+
 }
