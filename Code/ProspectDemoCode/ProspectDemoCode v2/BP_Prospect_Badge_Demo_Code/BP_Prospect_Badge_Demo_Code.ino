@@ -45,12 +45,13 @@ const int BTNMIDDLE = 8;
 const int LED_DELAY = 100;
 const int BTNTHRESHOLD = 30000;
 const int BTNTIMEVAR = 1000;
-
+const int WEBTEXTSCROLLVAR = 2000;
 
 String WEBSERIAL_DATA = "";
 int BTNPRESSED = 0;
 int FIRSTBOOT = 1;
 int WEBSERIAL_MENU_DISPLAY = 0;
+int idx = 0;
 
 
 noDelay BTNLEFT_TIME(BTNTIMEVAR);
@@ -59,11 +60,12 @@ noDelay BTNUP_TIME(BTNTIMEVAR);
 noDelay BTNDOWN_TIME(BTNTIMEVAR);
 noDelay BTNMIDDLE_TIME(BTNTIMEVAR);
 noDelay DEBUG_TIME(DEBUGTIMEVAR);
+noDelay WEBTEXTSCROLL_TIME(WEBTEXTSCROLLVAR);
 
 DNSServer dnsServer;
 
 /* Message callback of WebSerial */
-void recvMsg(uint8_t *data, size_t len){
+void recvMsg(uint8_t *data, size_t len) {
   //WebSerial.println("Received Data...");
   for(int i=0; i < len; i++){
     WEBSERIAL_DATA += char(data[i]);
@@ -74,6 +76,22 @@ void recvMsg(uint8_t *data, size_t len){
 
 }
 
+// Text for WebSerial output
+
+
+String WEBTEXT[9] = {
+  "Welcome to the 2022 Badge Pirates Demo Badge",
+  "Badge Features:",
+  "ESP32-S Microprocessor",
+  "Wifi / Access Point",
+  "Web based interactive console",
+  "Capacitive Touch buttons",
+  "Onboard Over the Air (OTA) update capability",
+  "Lithium-ion battery & onboard charger",
+  "Contact us at sales@badgepirates.com for more information"
+  };
+
+  
 
 void setup() {
     Serial.begin(115200);
@@ -157,6 +175,15 @@ if (FIRSTBOOT == 1) {
 }
 
 
+if (idx == sizeof(WEBTEXT)) {
+  idx = 0;
+}
+
+if (WEBTEXTSCROLL_TIME.update()) {
+  WebSerial.println(WEBTEXT[idx]);
+  idx++;
+
+}
 
 
    if (BTNLEFT_TIME.update()) {
