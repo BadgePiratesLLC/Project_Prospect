@@ -152,7 +152,6 @@ void BTNCHECK(uint8_t BTNNAME) {
 }
 
 
-
 void WEBSERIAL_MENU() {
   WebSerial.println("Enter your selection: ");
   WebSerial.println("");
@@ -175,6 +174,8 @@ if (FIRSTBOOT == 1) {
 }
 
 
+
+// Iterate through the array by index and itterate every time webscroll time update period
 if (idx == sizeof(WEBTEXT)) {
   idx = 0;
 }
